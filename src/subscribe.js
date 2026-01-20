@@ -69,24 +69,9 @@ export async function handleSubscribe(request, env) {
 
     for (const config of configs) {
       try {
-        // 获取订阅内容
-        const subscriptionResponse = await fetch(config.url);
-        if (!subscriptionResponse.ok) {
-          console.error(`Failed to fetch subscription for ${config.alias}`);
-          continue;
-        }
-
-        const subscriptionText = await subscriptionResponse.text();
-
-        // 解析订阅并添加到代理列表
-        const decoded = atob(subscriptionText.trim());
-        const links = decoded.split('\n').filter(link => link.trim());
-
-        for (const link of links) {
-          const proxyConfig = parseProxyLink(link);
-          if (proxyConfig) {
-            allProxies.push(proxyConfig);
-          }
+        const proxyConfig = parseProxyLink(config.url, config.alias);
+        if (proxyConfig) {
+          allProxies.push(proxyConfig);
         }
       } catch (e) {
         console.error(`Error processing config ${config.alias}:`, e);

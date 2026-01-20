@@ -1,22 +1,28 @@
 // 订阅转换工具 - 将各种代理链接转换为 Clash 配置格式
-function parseVlessLink(link) {
+function parseVlessLink(link, name) {
     try {
-        const url = new URL(link);
+        const urlPart = link.replace('vless://', '');
+        const [uuidHost, queryHash] = urlPart.split('?');
+        const [uuid, hostPort] = uuidHost.split('@');
+        const [host, port] = hostPort.split(':');
+        const [query, hash] = queryHash ? queryHash.split('#') : ['', ''];
+        const params = new URLSearchParams(query);
+
         return {
-            name: url.hash ? decodeURIComponent(url.hash.substring(1)) : url.hostname,
-            server: url.hostname,
-            port: parseInt(url.port) || 443,
+            name: name,
+            server: host,
+            port: parseInt(port) || 443,
             type: 'vless',
-            uuid: url.username,
+            uuid: uuid,
             tls: true,
-            flow: url.searchParams.get('flow') || '',
-            network: url.searchParams.get('type') || 'tcp',
-            'reality-opts': url.searchParams.get('security') === 'reality' ? {
-                'public-key': url.searchParams.get('pbk'),
-                'short-id': url.searchParams.get('sid') || ''
+            flow: params.get('flow') || '',
+            network: params.get('type') || 'tcp',
+            'reality-opts': params.get('security') === 'reality' ? {
+                'public-key': params.get('pbk'),
+                'short-id': params.get('sid') || ''
             } : undefined,
-            'client-fingerprint': url.searchParams.get('fp') || 'chrome',
-            servername: url.searchParams.get('sni') || url.hostname
+            'client-fingerprint': params.get('fp') || 'chrome',
+            servername: params.get('sni') || host
         };
     } catch (e) {
         console.error('Failed to parse vless link:', e);
@@ -24,13 +30,13 @@ function parseVlessLink(link) {
     }
 }
 
-function parseVmessLink(link) {
+function parseVmessLink(link, name) {
     try {
         const base64 = link.replace('vmess://', '');
         const jsonStr = atob(base64);
         const config = JSON.parse(jsonStr);
         return {
-            name: config.ps || config.add,
+            name: name,
             server: config.add,
             port: parseInt(config.port),
             type: 'vmess',
@@ -51,12 +57,12 @@ function parseVmessLink(link) {
     }
 }
 
-function parseProxyLink(link) {
+function parseProxyLink(link, name) {
     const trimmed = link.trim();
     if (trimmed.startsWith('vless://')) {
-        return parseVlessLink(trimmed);
+        return parseVlessLink(trimmed, name);
     } else if (trimmed.startsWith('vmess://')) {
-        return parseVmessLink(trimmed);
+        return parseVmessLink(trimmed, name);
     } else {
         return null;
     }
