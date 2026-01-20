@@ -24,9 +24,7 @@
 
 4. 选择你的 Fork 仓库
 
-5. 配置构建设置：
-   - **Build command**: `node build.js`
-   - **Build output directory**: `public`
+5. 配置部署设置：
    - **Root directory**: `/` (留空)
 
 6. 创建 KV 数据库：
@@ -43,46 +41,7 @@
      - KV namespace: 选择刚才创建的 `PROXY_STORE`
 
 9. 部署：
-   - 保存设置，Cloudflare 会自动构建和部署
-
-### 方法二：本地部署
-
-#### 前置要求
-
-- Node.js 16+
-- Cloudflare 账户
-- Wrangler CLI
-
-#### 步骤
-
-1. 安装 Wrangler：
-
-```bash
-npm install -g wrangler
-```
-
-2. 登录 Cloudflare：
-
-```bash
-wrangler auth login
-```
-
-3. 配置项目：
-
-编辑 `workers/wrangler.toml`，设置正确的 KV namespace ID。
-
-4. 创建 KV Namespace：
-
-```bash
-wrangler kv:namespace create "PROXY_STORE"
-```
-
-5. 部署：
-
-```bash
-cd workers
-wrangler deploy
-```
+   - 保存设置，Cloudflare 会自动部署
 
 ## 使用方法
 

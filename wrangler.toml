@@ -1,9 +1,6 @@
 name = "subconvert-backend"
-main = "src/index.js"
+main = "index.js"
 compatibility_date = "2023-01-01"
-
-[build]
-command = "node build.js"
 
 
 [kv_namespaces]

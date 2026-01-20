@@ -1,5 +1,5 @@
-import { handleStore } from './store.js';
-import { handleSubscribe } from './subscribe.js';
+import { handleStore } from './src/store.js';
+import { handleSubscribe } from './src/subscribe.js';
 
 export default {
   async fetch(request, env, ctx) {
