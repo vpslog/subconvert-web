@@ -32,7 +32,7 @@ if (!fs.existsSync('public')) {
 }
 
 // 复制前端文件
-copyFile('../index.html', 'public/index.html');
-copyDir('../src', 'public/src');
+copyFile('public/index.html', 'public/index.html');
+copyDir('public/src', 'public/src');
 
 console.log('Build completed');

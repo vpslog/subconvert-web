@@ -25,8 +25,8 @@
 4. 选择你的 Fork 仓库
 
 5. 配置构建设置：
-   - **Build command**: `node workers/build.js`
-   - **Build output directory**: `workers/public`
+   - **Build command**: `node build.js`
+   - **Build output directory**: `public`
    - **Root directory**: `/` (留空)
 
 6. 创建 KV 数据库：
@@ -157,23 +157,21 @@ wrangler dev
 
 ```
 .
-├── index.html              # 前端页面
-├── src/
-│   ├── main.js            # Vue 应用主逻辑
-│   ├── store/
-│   │   └── profiles.js    # API 客户端
-│   └── utils/
-│       └── api.js         # API 工具
-├── workers/               # Cloudflare Workers
-│   ├── src/
-│   │   ├── index.js       # 主入口
-│   │   ├── store.js       # 配置 CRUD
-│   │   ├── subscribe.js   # 订阅转换
-│   │   └── converter.js   # 转换逻辑
-│   ├── build.js           # 构建脚本
-│   ├── public/            # 构建输出目录
-│   └── wrangler.toml      # Workers 配置
-├── 开发文档.md             # 开发文档
+├── public/                 # 前端文件
+│   ├── index.html         # 前端页面
+│   └── src/
+│       ├── main.js        # Vue 应用主逻辑
+│       ├── store/
+│       │   └── profiles.js # API 客户端
+│       └── utils/
+│           └── api.js     # API 工具
+├── src/                   # Cloudflare Workers 代码
+│   ├── index.js           # 主入口
+│   ├── store.js           # 配置 CRUD
+│   ├── subscribe.js       # 订阅转换
+│   └── converter.js       # 转换逻辑
+├── build.js               # 构建脚本
+├── wrangler.toml          # Workers 配置
 └── README.md              # 部署文档
 ```
 
