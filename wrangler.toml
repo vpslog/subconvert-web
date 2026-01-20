@@ -1,3 +1,7 @@
 name = "subconvert-backend"
 main = "index.js"
 compatibility_date = "2023-01-01"
+
+[assets]
+directory = "public"
+binding = "ASSETS"
