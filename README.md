@@ -30,17 +30,13 @@
 6. 创建 KV 数据库：
    - 进入 Workers -> KV
    - 创建新的 Namespace，命名为 `PROXY_STORE`
-   - 记录生成的 Namespace ID
 
-7. 配置环境变量：
-   - 目前无需额外环境变量配置
-
-8. 绑定 KV：
-   - 在 Pages 设置 -> Functions -> KV namespace bindings 中添加：
+7. 绑定 KV：
+   - 在 KV namespace bindings 中添加：
      - Variable name: `PROXY_STORE`
      - KV namespace: 选择刚才创建的 `PROXY_STORE`
 
-9. 部署：
+8. 部署：
    - 保存设置，Cloudflare 会自动部署
 
 ## 使用方法

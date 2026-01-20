@@ -1,9 +1,3 @@
 name = "subconvert-backend"
 main = "index.js"
 compatibility_date = "2023-01-01"
-
-
-[kv_namespaces]
-bindings = [
-  { binding = "PROXY_STORE", id = "your_kv_namespace_id" }
-]
