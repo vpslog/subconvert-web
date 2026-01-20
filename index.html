@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SubConvert Web</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="src/utils/api.js"></script>
+    <script src="src/store/profiles.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen">
+    <div id="app" class="container mx-auto p-6 w-2/3">
+        <!-- Template will be mounted here -->
+    </div>
+    <script type="text/x-template" id="app-template">
+        <div>
+            <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">订阅转换工具</h1>
+            <div v-if="loading" class="text-center py-4">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                <span class="ml-2">加载中...</span>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-lg mb-6">
+                <h2 class="text-xl font-semibold mb-4 text-gray-800">添加/编辑订阅</h2>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">别名</label>
+                    <input v-model="newAlias" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all" placeholder="别名" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">订阅 URL</label>
+                    <input v-model="newUrl" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all" placeholder="订阅 URL" />
+                </div>
+                <div class="flex gap-3">
+                    <button @click="addOrUpdateProfile" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-xl font-medium transition-all">{{ editingId ? '更新' : '保存' }}</button>
+                    <button v-if="editingId" @click="() => { editingId = null; newAlias=''; newUrl=''; }" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-xl font-medium transition-all">取消</button>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-lg">
+                <h2 class="text-xl font-semibold mb-4 text-gray-800">订阅配置</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full table-auto border-collapse border border-gray-200 rounded-xl overflow-hidden whitespace-nowrap">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="border border-gray-300 p-3 text-left w-16">启用</th>
+                                <th class="border border-gray-300 p-3 text-left w-32">名称</th>
+                                <th class="border border-gray-300 p-3 text-left w-48">订阅URL</th>
+                                <th class="border border-gray-300 p-3 text-left w-40">更新时间</th>
+                                <th class="border border-gray-300 p-3 text-left w-48">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="profile in profiles" :key="profile.id" class="hover:bg-gray-50 transition-colors">
+                                <td class="border border-gray-300 p-3 text-center">
+                                    <input type="checkbox" :checked="profile.enabled" @change="toggleEnabled(profile.id)" class="w-4 h-4 text-gray-600 rounded focus:ring-gray-500" />
+                                </td>
+                                <td class="border border-gray-300 p-3 font-medium">{{ profile.alias }}</td>
+                                <td class="border border-gray-300 p-3 text-sm text-gray-600 truncate max-w-xs" :title="profile.url">{{ profile.url }}</td>
+                                <td class="border border-gray-300 p-3 text-sm text-gray-600">{{ new Date(profile.updatedAt).toLocaleString() }}</td>
+                                <td class="border border-gray-300 p-3">
+                                    <div class="flex gap-2">
+                                        <button @click="editProfile(profile.id)" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all">编辑</button>
+                                        <button @click="exportLink(profile)" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all">导出</button>
+                                        <button @click="deleteProf(profile.id)" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all">删除</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-6 text-right">
+                    <button @click="exportAllLinks" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-xl font-medium transition-all">批量导出所有链接</button>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script src="src/main.js"></script>
+</body>
+</html>

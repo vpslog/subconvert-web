@@ -1,0 +1,14 @@
+name = "subconvert-backend"
+main = "src/index.js"
+compatibility_date = "2023-01-01"
+
+[build]
+command = "node build.js"
+
+[vars]
+SUBCONVERTER_URL = "https://subconverter.example.com"
+
+[kv_namespaces]
+bindings = [
+  { binding = "PROXY_STORE", id = "your_kv_namespace_id" }
+]
